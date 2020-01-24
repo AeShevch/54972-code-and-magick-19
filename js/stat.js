@@ -10,6 +10,9 @@ window.renderStatistics = function (ctx, names, times) {
   var LINE_HEIGHT = 23;
   var CLOUD_PADDING = 25;
 
+  var cloudInnerX = CLOUD_POSITION_X + CLOUD_PADDING;
+  var cloudInnerY = CLOUD_POSITION_Y + CLOUD_PADDING;
+
   // Объдиняем массивы names и times,
   // чтобы получить единый объект с результатами
   var results = {};
@@ -19,51 +22,72 @@ window.renderStatistics = function (ctx, names, times) {
 
   // Начинаем рисовать
   // Тень
-  ctx.beginPath();
-  ctx.rect(
+  createFillRect(
+      ctx,
       CLOUD_POSITION_X + SHADOW_OFFSET,
       CLOUD_POSITION_Y + SHADOW_OFFSET,
-      CLOUD_WIDTH, CLOUD_HEIGHT
+      CLOUD_WIDTH,
+      CLOUD_HEIGHT,
+      'rgba(0, 0, 0, 0.7)'
   );
-  ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
-  ctx.fill();
 
   // Облако
-  ctx.beginPath();
-  ctx.rect(
+  createFillRect(
+      ctx,
       CLOUD_POSITION_X,
       CLOUD_POSITION_Y,
       CLOUD_WIDTH,
-      CLOUD_HEIGHT
+      CLOUD_HEIGHT,
+      '#fff'
   );
-  ctx.fillStyle = '#fff';
-  ctx.fill();
 
-  // Текст
+  // Пишем заголовки
+
   ctx.font = '16px PT Mono';
   ctx.fillStyle = '#000';
   ctx.textBaseline = 'hanging';
   ctx.fillText(
       'Ура вы победили!',
-      CLOUD_POSITION_X + CLOUD_PADDING,
-      CLOUD_POSITION_Y + CLOUD_PADDING
+      cloudInnerX,
+      cloudInnerY
   );
   ctx.fillText(
       'Список результатов:',
-      CLOUD_POSITION_X + CLOUD_PADDING,
-      CLOUD_POSITION_Y + CLOUD_PADDING + LINE_HEIGHT
+      cloudInnerX,
+      cloudInnerY + LINE_HEIGHT
   );
 
   // Гистограмма времён участников
-  ctx.beginPath();
-  ctx.strokeStyle = '#000';
-  ctx.strokeRect(
-      CLOUD_POSITION_X + CLOUD_PADDING,
-      CLOUD_POSITION_Y + CLOUD_PADDING + 2 * LINE_HEIGHT,
+  // Рамка гистограммы
+  createStrokeRect(
+      ctx,
+      cloudInnerX,
+      cloudInnerY + 2 * LINE_HEIGHT,
       CLOUD_WIDTH - 2 * CLOUD_PADDING,
-      CLOUD_HEIGHT - 2 * CLOUD_PADDING - 2 * LINE_HEIGHT
+      CLOUD_HEIGHT - 2 * CLOUD_PADDING - 2 * LINE_HEIGHT,
+      '#000'
   );
+};
 
-  // TODO Refactor: повыносить в константы все повторяющиеся значения
-  // Сделать функцию создания прямоуголников
+var createFillRect = function (ctx, posX, posY, width, height, color) {
+  ctx.beginPath();
+  ctx.rect(
+      posX,
+      posY,
+      width,
+      height
+  );
+  ctx.fillStyle = color;
+  ctx.fill();
+};
+
+var createStrokeRect = function (ctx, posX, posY, width, height, color) {
+  ctx.beginPath();
+  ctx.strokeStyle = color;
+  ctx.strokeRect(
+      posX,
+      posY,
+      width,
+      height
+  );
 };
