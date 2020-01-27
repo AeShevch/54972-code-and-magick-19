@@ -76,6 +76,13 @@ window.renderStatistics = function (ctx, names, times) {
       MAIN_TEXT_COLOR
   );
 
+  // Узнаём индекс имени игрока в массиве names
+  var userIndex = names.indexOf('Вы');
+
+  // Перемещаем имя и результат в начало массивов
+  moveElemToStartOfArray(userIndex, names);
+  moveElemToStartOfArray(userIndex, times);
+
   // Сортируем результаты по убыванию, чтобы найти максимальное значение
   var sortedTimes = times.slice().sort(function (a, b) {
     return b - a;
@@ -155,9 +162,13 @@ var createStrokeRect = function (ctx, posX, posY, width, height, color) {
   ctx.beginPath();
   ctx.strokeStyle = color;
   ctx.strokeRect(
-    posX,
-    posY,
-    width,
-    height
+      posX,
+      posY,
+      width,
+      height
   );
+};
+
+var moveElemToStartOfArray = function (index, arr) {
+  arr.splice(0, 0, arr.splice(index, 1).join(''));
 };
