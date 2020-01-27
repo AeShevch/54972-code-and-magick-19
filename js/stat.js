@@ -7,7 +7,7 @@ window.renderStatistics = function (ctx, names, times) {
   var CLOUD_WIDTH = 420;
   var CLOUD_HEIGHT = 270;
   var SHADOW_OFFSET = 10;
-  var LINE_HEIGHT = 23;
+  var LINE_HEIGHT = 18;
   var CLOUD_PADDING = 25;
   var COLUMN_WIDTH = 40;
   var COLUMN_INDENT = 50;
@@ -17,6 +17,23 @@ window.renderStatistics = function (ctx, names, times) {
 
   var CLOUD_INNER_X = CLOUD_POSITION_X + CLOUD_PADDING;
   var CLOUD_INNER_Y = CLOUD_POSITION_Y + CLOUD_PADDING;
+
+  // Гистограмма времён участников
+  // Координаты и размеры контейнера
+  var LINES_COUNT_IN_CLOUD = 2;
+  var PADDINGS_COUNT_IN_CLOUD = 2;
+
+  var HISTOGRAM_WRAP_X = CLOUD_INNER_X;
+  var HISTOGRAM_WRAP_Y = CLOUD_INNER_Y + LINES_COUNT_IN_CLOUD * LINE_HEIGHT;
+  var HISTOGRAM_WIDTH = CLOUD_WIDTH - PADDINGS_COUNT_IN_CLOUD * CLOUD_PADDING;
+  var HISTOGRAM_HEIGHT = CLOUD_HEIGHT - PADDINGS_COUNT_IN_CLOUD * CLOUD_PADDING - LINES_COUNT_IN_CLOUD * LINE_HEIGHT;
+
+  var LINES_COUNT_IN_HISTOGRAM = 3;
+  var PADDINGS_COUNT_IN_HISTOGRAM = 2;
+
+  var HISTOGRAM_INNER_Y = HISTOGRAM_WRAP_Y + HISTOGRAM_PADDING;
+  var HISTOGRAM_INNER_X = HISTOGRAM_WRAP_X + HISTOGRAM_PADDING;
+  var HISTOGRAM_INNER_HEIGHT = HISTOGRAM_HEIGHT - PADDINGS_COUNT_IN_HISTOGRAM * HISTOGRAM_PADDING;
 
   // Начинаем рисовать
   // Тень
@@ -55,24 +72,14 @@ window.renderStatistics = function (ctx, names, times) {
       CLOUD_INNER_Y + LINE_HEIGHT
   );
 
-  // Гистограмма времён участников
-  // Координаты и размеры контейнера
-  var histogramWrapX = CLOUD_INNER_X;
-  var histogramWrapY = CLOUD_INNER_Y + 2 * LINE_HEIGHT;
-  var histogramWidth = CLOUD_WIDTH - 2 * CLOUD_PADDING;
-  var histogramHeight = CLOUD_HEIGHT - 2 * CLOUD_PADDING - 2 * LINE_HEIGHT;
-
-  var HISTOGRAM_INNER_Y = histogramWrapY + HISTOGRAM_PADDING;
-  var HISTOGRAM_INNER_X = histogramWrapX + HISTOGRAM_PADDING;
-  var HISTOGRAM_INNER_HEIGHT = histogramHeight - 2 * HISTOGRAM_PADDING;
 
   // Рамка гистограммы
   createStrokeRect(
       ctx,
-      histogramWrapX,
-      histogramWrapY,
-      histogramWidth,
-      histogramHeight,
+      HISTOGRAM_WRAP_X,
+      HISTOGRAM_WRAP_Y,
+      HISTOGRAM_WIDTH,
+      HISTOGRAM_HEIGHT,
       MAIN_TEXT_COLOR
   );
 
@@ -88,7 +95,7 @@ window.renderStatistics = function (ctx, names, times) {
     return b - a;
   });
   // Берём максимальное значение за 100% и высчитываем 1%
-  var onePercent = sortedTimes[0].toFixed(1) / 100;
+  var onePercent = parseInt(sortedTimes[0], 10).toFixed(1) / 100;
 
   names.forEach(function (name, i) {
     // Высота колонки это максимальная высота, умноженная на процент данного значения результата от максимального
@@ -101,7 +108,7 @@ window.renderStatistics = function (ctx, names, times) {
     // Позиция бара по Y это верхняя граница колонки + высота текста с количеством секунд
     var resultBarPosY = columnPosY + LINE_HEIGHT;
     // Высота бара это высота колонки минус высота трёх строк текста - с именем, количеством секунд, и дополнительным отступом
-    var resultBarHeight = columnHeight - 3 * LINE_HEIGHT;
+    var resultBarHeight = columnHeight - LINES_COUNT_IN_HISTOGRAM * LINE_HEIGHT;
 
     // Позиция по Y строки с именем равна позиции бара + его высота и + высота строки для отступа
     var nameTextPosY = resultBarPosY + resultBarHeight + LINE_HEIGHT;
