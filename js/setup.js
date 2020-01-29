@@ -2,29 +2,8 @@
 
 document.querySelector('.js-setup-toggle').classList.remove('hidden');
 
-function Hero() {
-  Object.defineProperties(this, {
-    'name': {
-      get() {
-        return this.getRandomElem(this.firstNames) + ' ' + this.getRandomElem(this.surNames);
-      }
-    },
-    'coatColor': {
-      get() {
-        return this.getRandomElem(this.coatColors);
-      }
-    },
-    'eyesColor': {
-      get() {
-        return this.getRandomElem(this.eyesColors);
-      }
-    }
-  });
-}
-
-// Добавляем в прототип информацию и методы, необходимые для создания объекта
 // Все имена
-Hero.prototype.firstNames = [
+var firstNames = [
   'Иван',
   'Хуан Себастьян',
   'Мария',
@@ -35,7 +14,7 @@ Hero.prototype.firstNames = [
   'Вашингтон'
 ];
 // Все фамилии
-Hero.prototype.surNames = [
+var surNames = [
   'да Марья',
   'Верон',
   'Мирабелла',
@@ -46,7 +25,7 @@ Hero.prototype.surNames = [
   'Ирвинг'
 ];
 // Все цвета мантии (rgb)
-Hero.prototype.coatColors = [
+var coatColors = [
   '101, 137, 164',
   '241, 43, 107',
   '146, 100, 161',
@@ -55,14 +34,35 @@ Hero.prototype.coatColors = [
   '0, 0, 0'
 ];
 // Все цвета глаз
-Hero.prototype.eyesColors = [
+var eyesColors = [
   'black',
   'red',
   'blue',
   'yellow',
   'green'
 ];
-// Возвращает стандартный элемент массива
+
+function Hero() {
+  Object.defineProperties(this, {
+    'name': {
+      get() {
+        return this.getRandomElem(firstNames) + ' ' + this.getRandomElem(surNames);
+      }
+    },
+    'coatColor': {
+      get() {
+        return this.getRandomElem(coatColors);
+      }
+    },
+    'eyesColor': {
+      get() {
+        return this.getRandomElem(eyesColors);
+      }
+    }
+  });
+}
+
+// Возвращает случайный элемент массива
 Hero.prototype.getRandomElem = function (arr) {
   var index = Math.floor(Math.random() * arr.length);
   return arr[index];
