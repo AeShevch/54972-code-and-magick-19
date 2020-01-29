@@ -1,5 +1,6 @@
 'use strict';
 
+// Показываем блок с настройками
 document.querySelector('.js-setup-toggle').classList.remove('hidden');
 
 // Все имена
@@ -44,7 +45,7 @@ var eyesColors = [
 
 function Hero() {
   Object.defineProperties(this, {
-    'name': {
+    'fullName': {
       get() {
         return this.getRandomElem(firstNames) + ' ' + this.getRandomElem(surNames);
       }
@@ -68,14 +69,35 @@ Hero.prototype.getRandomElem = function (arr) {
   return arr[index];
 };
 
+// Требуемое кол-во героев
 var HEROES_COUNT = 4;
-var heroes = [];
 
+// Создаём массив и добавлям в него требуемое кол-во героев
+var heroes = [];
 for (var i = 0; i < HEROES_COUNT; i++) {
   heroes.push(new Hero());
 }
 
-console.log(heroes);
+// Генерируем вёрстку
+// Берём шаблон
+var template = document.getElementById('similar-wizard-template').content.querySelector('.js-wizard-html-wrap');
+// Создаём контейнер для вёрстки
+var fragment = document.createDocumentFragment();
+// Проходим по массиву, копируем вёрстку из шаблона, изменяем её, вставляем в фрагмент
+heroes.forEach(function (hero) {
+  var wizardHtml = template.cloneNode(true);
 
+  wizardHtml.querySelector('.js-wizard-coat').setAttribute('fill', 'rgb(' + hero.coatColor + ')');
+  wizardHtml.querySelector('.js-wizard-eyes').setAttribute('fill', hero.eyesColor);
+  wizardHtml.querySelector('.js-wizard-full-name').textContent = hero.fullName;
+
+  fragment.appendChild(wizardHtml);
+});
+
+// Находим необходимый узел и вставялем в него фрагмент со всей вёрсткой
+document.querySelector('.js-insert-wizards').appendChild(fragment);
+
+// Находим главный контейнер и показываем его
+document.querySelector('.js-similar-wizards-container').classList.remove('hidden');
 
 

@@ -148,11 +148,11 @@
     </div>
 
     <div class="setup-footer">
-      <div class="setup-similar hidden">
+      <div class="setup-similar js-similar-wizards-container hidden">
 
         <h4 class="setup-similar-title">Похожие персонажи</h4>
 
-        <div class="setup-similar-list"><!--Список похожих персонажей--></div>
+        <div class="setup-similar-list js-insert-wizards"><!--Список похожих персонажей--></div>
       </div>
 
       <button class="button setup-submit">Сохранить</button>
@@ -166,18 +166,18 @@
 </footer>
 
 <template id="similar-wizard-template" style="display: none">
-  <div class="setup-similar-item">
+  <div class="setup-similar-item js-wizard-html-wrap">
     <div class="setup-similar-content">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 62 86" class="setup-similar-wizard">
         <g class="wizard">
-          <use xlink:href="#wizard-coat" class="wizard-coat"></use>
+          <use xlink:href="#wizard-coat" class="js-wizard-coat wizard-coat"></use>
           <use xlink:href="#wizard-head" class="wizard-head"></use>
-          <use xlink:href="#wizard-eyes" class="wizard-eyes"></use>
+          <use xlink:href="#wizard-eyes" class="js-wizard-eyes wizard-eyes"></use>
           <use xlink:href="#wizard-hands" class="wizard-hands"></use>
         </g>
       </svg>
     </div>
-    <p class="setup-similar-label">Петр Петров</p>
+    <p class="setup-similar-label js-wizard-full-name">Петр Петров</p>
   </div>
 </template>
 
