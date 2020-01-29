@@ -44,23 +44,9 @@ var eyesColors = [
 ];
 
 function Hero() {
-  Object.defineProperties(this, {
-    'fullName': {
-      get() {
-        return this.getRandomElem(firstNames) + ' ' + this.getRandomElem(surNames);
-      }
-    },
-    'coatColor': {
-      get() {
-        return this.getRandomElem(coatColors);
-      }
-    },
-    'eyesColor': {
-      get() {
-        return this.getRandomElem(eyesColors);
-      }
-    }
-  });
+  this.fullName = this.getRandomElem(firstNames) + ' ' + this.getRandomElem(surNames);
+  this.coatColor = this.getRandomElem(coatColors);
+  this.eyesColor = this.getRandomElem(eyesColors);
 }
 
 // Возвращает случайный элемент массива
