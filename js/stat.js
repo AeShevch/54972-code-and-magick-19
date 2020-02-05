@@ -179,3 +179,5 @@ var createStrokeRect = function (ctx, posX, posY, width, height, color) {
 var moveElemToStartOfArray = function (index, arr) {
   arr.splice(0, 0, arr.splice(index, 1).join(''));
 };
+
+

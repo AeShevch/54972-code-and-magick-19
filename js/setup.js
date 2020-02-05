@@ -1,7 +1,20 @@
 'use strict';
 
-// Показываем блок с настройками
-document.querySelector('.js-setup-toggle').classList.remove('hidden');
+var ESC_KEY = 'Escape';
+var ENTER_KEY = 'Enter';
+
+var POPUP = document.querySelector('.js-setup-toggle');
+
+var CLOSE_POPUP_BTN = POPUP.querySelector('.setup-close');
+var OPEN_POPUP_BTN = document.querySelector('.setup-open');
+var SAVE_POPUP_BTN = POPUP.querySelector('.setup-submit');
+
+var WIZARD_COAT = document.querySelector('.wizard-coat');
+var WIZARD_EYES = document.querySelector('.wizard-eyes');
+// var FIREBALL = document.querySelector('.setup-fireball-wrap');
+
+// Требуемое кол-во героев
+var HEROES_COUNT = 4;
 
 // Все имена
 var firstNames = [
@@ -43,20 +56,21 @@ var eyesColors = [
   'green'
 ];
 
-function Hero() {
-  this.fullName = this.getRandomElem(firstNames) + ' ' + this.getRandomElem(surNames);
-  this.coatColor = this.getRandomElem(coatColors);
-  this.eyesColor = this.getRandomElem(eyesColors);
-}
-
 // Возвращает случайный элемент массива
-Hero.prototype.getRandomElem = function (arr) {
+var getRandomElem = function (arr) {
   var index = Math.floor(Math.random() * arr.length);
   return arr[index];
 };
 
-// Требуемое кол-во героев
-var HEROES_COUNT = 4;
+var changeSvgColor = function (item, color) {
+  item.style.fill = color;
+};
+
+function Hero() {
+  this.fullName = getRandomElem(firstNames) + ' ' + getRandomElem(surNames);
+  this.coatColor = getRandomElem(coatColors);
+  this.eyesColor = getRandomElem(eyesColors);
+}
 
 // Создаём массив и добавлям в него требуемое кол-во героев
 var heroes = [];
@@ -85,5 +99,60 @@ document.querySelector('.js-insert-wizards').appendChild(fragment);
 
 // Находим главный контейнер и показываем его
 document.querySelector('.js-similar-wizards-container').classList.remove('hidden');
+
+var openPopup = function () {
+  POPUP.classList.remove('hidden');
+  document.addEventListener('keyup', onPopupEscPress);
+  POPUP.querySelector('.setup-user-name').addEventListener('keyup', function (evt) {
+    evt.stopPropagation();
+  });
+};
+
+var closePopup = function () {
+  POPUP.classList.add('hidden');
+  document.removeEventListener('keyup', onPopupEscPress);
+  document.removeEventListener('keyup', onEnterInputPress);
+  document.removeEventListener('keyup', onEnterClosePress);
+};
+
+var onPopupEscPress = function (evt) {
+  if (evt.key === ESC_KEY) {
+    closePopup();
+  }
+};
+
+var onEnterInputPress = function (evt) {
+  if (evt.key === ENTER_KEY) {
+    evt.stopPropagation();
+    openPopup();
+  }
+};
+
+var onEnterClosePress = function (evt) {
+  if (evt.key === ENTER_KEY) {
+    evt.stopPropagation();
+    closePopup();
+  }
+};
+
+CLOSE_POPUP_BTN.addEventListener('click', function () {
+  closePopup();
+});
+
+OPEN_POPUP_BTN.addEventListener('click', function () {
+  openPopup();
+});
+
+OPEN_POPUP_BTN.querySelector('.setup-open-icon').addEventListener('keyup', onEnterInputPress);
+
+CLOSE_POPUP_BTN.addEventListener('keyup', onEnterClosePress);
+
+WIZARD_COAT.addEventListener('click', function (evt) {
+  changeSvgColor(evt.currentTarget, 'rgb(' + getRandomElem(coatColors) + ')');
+});
+
+WIZARD_EYES.addEventListener('click', function (evt) {
+  changeSvgColor(evt.currentTarget, getRandomElem(eyesColors));
+});
 
 

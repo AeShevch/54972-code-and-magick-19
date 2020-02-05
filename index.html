@@ -63,7 +63,7 @@
   <div class="demo"></div>
 
   <div class="setup-open">
-    <img src="./img/user-1.jpg" class="setup-open-icon">
+    <img tabindex="0" src="./img/user-1.jpg" class="setup-open-icon">
   </div>
 </header>
 
@@ -77,7 +77,7 @@
       <div class="setup-user">
         <div class="upload">
           <img class="setup-user-pic" src="./img/user-1.jpg"/>
-          <input type="file" name="avatar">
+          <input type="file" name="avatar" min="2" max="25">
         </div>
         <label>
           <input type="text" name="username"
@@ -86,7 +86,7 @@
         </label>
       </div>
 
-      <span class="setup-close">&times;</span>
+      <span class="setup-close" tabindex="0">&times;</span>
     </div>
 
 
