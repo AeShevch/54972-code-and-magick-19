@@ -17,7 +17,7 @@ var WIZARD_TEMPLATE = document.getElementById('similar-wizard-template').content
 var HEROES_COUNT = 4;
 
 // Все имена
-var firstNames = [
+var FIRST_NAMES = [
   'Иван',
   'Хуан Себастьян',
   'Мария',
@@ -28,7 +28,7 @@ var firstNames = [
   'Вашингтон'
 ];
 // Все фамилии
-var surNames = [
+var SUR_NAMES = [
   'да Марья',
   'Верон',
   'Мирабелла',
@@ -39,7 +39,7 @@ var surNames = [
   'Ирвинг'
 ];
 // Все цвета мантии (rgb)
-var coatColors = [
+var COAT_COLORS = [
   '101, 137, 164',
   '241, 43, 107',
   '146, 100, 161',
@@ -48,7 +48,7 @@ var coatColors = [
   '0, 0, 0'
 ];
 // Все цвета глаз
-var eyesColors = [
+var EYES_COLORS = [
   'black',
   'red',
   'blue',
@@ -56,7 +56,7 @@ var eyesColors = [
   'green'
 ];
 // Все цвета фаербола
-var fireBallCollors = [
+var FIREBALL_COLORS = [
   '#ee4830',
   '#30a8ee',
   '#5ce6c0',
@@ -65,15 +65,14 @@ var fireBallCollors = [
 ];
 
 function Hero() {
-  this.fullName = getRandomElem(firstNames) + ' ' + getRandomElem(surNames);
-  this.coatColor = getRandomElem(coatColors);
-  this.eyesColor = getRandomElem(eyesColors);
+  this.fullName = getRandomElem(FIRST_NAMES) + ' ' + getRandomElem(SUR_NAMES);
+  this.coatColor = getRandomElem(COAT_COLORS);
+  this.eyesColor = getRandomElem(EYES_COLORS);
 }
 
 // Возвращает случайный элемент массива
 var getRandomElem = function (arr) {
-  var index = Math.floor(Math.random() * arr.length);
-  return arr[index];
+  return arr[Math.floor(Math.random() * arr.length)];
 };
 
 var changeElementRandomColor = function (item, color, inputName, type) {
@@ -155,7 +154,7 @@ OPEN_POPUP_BTN.querySelector('.setup-open-icon').addEventListener('keyup', onEnt
 WIZARD_COAT.addEventListener('click', function (evt) {
   changeElementRandomColor(
       evt.currentTarget,
-      'rgb(' + getRandomElem(coatColors) + ')',
+      'rgb(' + getRandomElem(COAT_COLORS) + ')',
       'coat-color'
   );
 });
@@ -163,7 +162,7 @@ WIZARD_COAT.addEventListener('click', function (evt) {
 WIZARD_EYES.addEventListener('click', function (evt) {
   changeElementRandomColor(
       evt.currentTarget,
-      getRandomElem(eyesColors),
+      getRandomElem(EYES_COLORS),
       'eyes-color'
   );
 });
@@ -171,9 +170,8 @@ WIZARD_EYES.addEventListener('click', function (evt) {
 FIREBALL.addEventListener('click', function (evt) {
   changeElementRandomColor(
       evt.currentTarget,
-      getRandomElem(fireBallCollors),
+      getRandomElem(FIREBALL_COLORS),
       'eyes-color',
       'background'
   );
 });
-
