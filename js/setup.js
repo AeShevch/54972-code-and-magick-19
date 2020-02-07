@@ -75,8 +75,10 @@ var getRandomElem = function (arr) {
   return arr[Math.floor(Math.random() * arr.length)];
 };
 
-var changeElementRandomColor = function (item, color, inputName, type) {
-  document.querySelector('[name="' + inputName + '"]').value = color;
+var changeElementColor = function (item, color, inputName, type) {
+  if (inputName) {
+    document.querySelector('[name="' + inputName + '"]').value = color;
+  }
   if (type === 'background') {
     item.style.backgroundColor = color;
   } else {
@@ -132,8 +134,19 @@ var fragment = document.createDocumentFragment();
 heroes.forEach(function (hero) {
   var wizardHtml = WIZARD_TEMPLATE.cloneNode(true);
 
-  wizardHtml.querySelector('.js-wizard-coat').setAttribute('fill', 'rgb(' + hero.coatColor + ')');
-  wizardHtml.querySelector('.js-wizard-eyes').setAttribute('fill', hero.eyesColor);
+  changeElementColor(
+      wizardHtml.querySelector('.js-wizard-coat'),
+      'rgb(' + hero.coatColor + ')',
+      false,
+      'fill'
+  );
+  changeElementColor(
+      wizardHtml.querySelector('.js-wizard-eyes'),
+      hero.eyesColor,
+      false,
+      'fill'
+  );
+
   wizardHtml.querySelector('.js-wizard-full-name').textContent = hero.fullName;
 
   fragment.appendChild(wizardHtml);
@@ -152,7 +165,7 @@ OPEN_POPUP_BTN.querySelector('.setup-open-icon').addEventListener('keyup', onEnt
 
 // Изменение цвета мантии
 WIZARD_COAT.addEventListener('click', function (evt) {
-  changeElementRandomColor(
+  changeElementColor(
       evt.currentTarget,
       'rgb(' + getRandomElem(COAT_COLORS) + ')',
       'coat-color'
@@ -160,7 +173,7 @@ WIZARD_COAT.addEventListener('click', function (evt) {
 });
 // Изменение цвета глаз
 WIZARD_EYES.addEventListener('click', function (evt) {
-  changeElementRandomColor(
+  changeElementColor(
       evt.currentTarget,
       getRandomElem(EYES_COLORS),
       'eyes-color'
@@ -168,7 +181,7 @@ WIZARD_EYES.addEventListener('click', function (evt) {
 });
 // Изменение цвета фаербола
 FIREBALL.addEventListener('click', function (evt) {
-  changeElementRandomColor(
+  changeElementColor(
       evt.currentTarget,
       getRandomElem(FIREBALL_COLORS),
       'eyes-color',
