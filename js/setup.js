@@ -1,7 +1,72 @@
 'use strict';
 
-var ESC_KEY = 'Escape';
-var ENTER_KEY = 'Enter';
+// utils.js
+(function () {
+  // TODO 'use strict';
+  var ESC_KEY = 'Escape';
+  var ENTER_KEY = 'Enter';
+
+  var isEscapeEvent = function (evt, action) {
+    if (evt.key === ESC_KEY) {
+      action();
+    }
+  };
+
+  var isEnterEvent = function (evt, action) {
+    if (evt.key === ENTER_KEY) {
+      action();
+    }
+  };
+
+  window.utils = {
+    ESC_KEY: ESC_KEY,
+    ENTER_KEY: ENTER_KEY,
+    isEnterEvent: isEnterEvent,
+    isEscapeEvent: isEscapeEvent
+  };
+})();
+
+// dialog.js
+(function () {
+  // TODO 'use strict';
+  // TODO перенести константы
+  var openPopup = function () {
+    POPUP.classList.remove('hidden');
+    document.addEventListener('keyup', onPopupEscPress);
+    CLOSE_POPUP_BTN.addEventListener('keyup', onEnterClosePress);
+    POPUP.querySelector('.setup-user-name').addEventListener('keyup', function (evt) {
+      evt.stopPropagation();
+    });
+  };
+
+  var closePopup = function () {
+    POPUP.classList.add('hidden');
+    document.removeEventListener('keyup', onPopupEscPress);
+    document.removeEventListener('keyup', onEnterClosePress);
+  };
+
+  var onPopupEscPress = function (evt) {
+    window.utils.isEscapeEvent(evt, closePopup);
+  };
+
+  var onEnterInputPress = function (evt) {
+    // TODO stopPropagation??
+    window.utils.isEnterEvent(evt, function () {
+      evt.stopPropagation();
+      openPopup();
+    });
+  };
+
+  var onEnterClosePress = function (evt) {
+    // TODO stopPropagation??
+    window.utils.isEnterEvent(evt, function () {
+      evt.stopPropagation();
+      closePopup();
+    });
+  };
+
+})();
+
 
 var POPUP = document.querySelector('.js-setup-toggle');
 var CLOSE_POPUP_BTN = POPUP.querySelector('.setup-close');
@@ -83,41 +148,6 @@ var changeElementColor = function (item, color, inputName, type) {
     item.style.backgroundColor = color;
   } else {
     item.style.fill = color;
-  }
-};
-
-var openPopup = function () {
-  POPUP.classList.remove('hidden');
-  document.addEventListener('keyup', onPopupEscPress);
-  CLOSE_POPUP_BTN.addEventListener('keyup', onEnterClosePress);
-  POPUP.querySelector('.setup-user-name').addEventListener('keyup', function (evt) {
-    evt.stopPropagation();
-  });
-};
-
-var closePopup = function () {
-  POPUP.classList.add('hidden');
-  document.removeEventListener('keyup', onPopupEscPress);
-  document.removeEventListener('keyup', onEnterClosePress);
-};
-
-var onPopupEscPress = function (evt) {
-  if (evt.key === ESC_KEY) {
-    closePopup();
-  }
-};
-
-var onEnterInputPress = function (evt) {
-  if (evt.key === ENTER_KEY) {
-    evt.stopPropagation();
-    openPopup();
-  }
-};
-
-var onEnterClosePress = function (evt) {
-  if (evt.key === ENTER_KEY) {
-    evt.stopPropagation();
-    closePopup();
   }
 };
 
