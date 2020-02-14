@@ -63,9 +63,9 @@
 
   // ВСПОМОГАТЕЛЬНЫЕ ПЕРЕМЕННЫЕ
   // Массив для записи героев
-  var _heroes = [];
+  var heroes = [];
   // Контейнер для вёрстки похожих героев
-  var _fragment = document.createDocumentFragment();
+  var fragment = document.createDocumentFragment();
 
   // ФУНКЦИИ
   // Функция-конструктор героев
@@ -85,17 +85,17 @@
       item.style.fill = color;
     }
   };
-  // Заполняяет массив _heroes, указанным в константе HEROES_COUNT количеством героев
+  // Заполняяет массив heroes, указанным в константе HEROES_COUNT количеством героев
   var _prepareHeroesData = function () {
     // Создаём  и добавлям в массив требуемое кол-во героев
     for (var i = 0; i < HEROES_COUNT; i++) {
-      _heroes.push(new Hero());
+      heroes.push(new Hero());
     }
   };
   // Генерирует вёрстку героев
   var _generateHeroesHtml = function () {
     // Проходим по массиву, копируем вёрстку из шаблона, изменяем её, вставляем в фрагмент
-    _heroes.forEach(function (hero) {
+    heroes.forEach(function (hero) {
       var wizardHtml = WIZARD_TEMPLATE.cloneNode(true);
 
       _changeElementColor(
@@ -113,13 +113,13 @@
 
       wizardHtml.querySelector('.js-wizard-full-name').textContent = hero.fullName;
 
-      _fragment.appendChild(wizardHtml);
+      fragment.appendChild(wizardHtml);
     });
   };
   // Вставляет вёрстку героев в блок «Похожие персонажи» и показывает его
   var _initSimilarWizards = function () {
     // Находим необходимый узел и вставялем в него фрагмент со всей вёрсткой
-    document.querySelector('.js-insert-wizards').appendChild(_fragment);
+    document.querySelector('.js-insert-wizards').appendChild(fragment);
     // Находим главный контейнер и показываем его
     document.querySelector('.js-similar-wizards-container').classList.remove('hidden');
   };
