@@ -1,45 +1,55 @@
 'use strict';
 (function () {
+  // КОНСТАНТЫ
+  // Ссылки на узлы, используемые в модуле
   var POPUP = document.querySelector('.js-setup-toggle');
   var CLOSE_POPUP_BTN = POPUP.querySelector('.setup-close');
   var OPEN_POPUP_BTN = document.querySelector('.setup-open');
 
-  var openPopup = function () {
+  // ФУНКЦИИ
+  // Открывает попап
+  var _openPopup = function () {
     POPUP.classList.remove('hidden');
-    document.addEventListener('keyup', onPopupEscPress);
-    CLOSE_POPUP_BTN.addEventListener('keyup', onEnterClosePress);
+    document.addEventListener('keyup', _onPopupEscPress);
+    CLOSE_POPUP_BTN.addEventListener('keyup', _onEnterClosePress);
     POPUP.querySelector('.setup-user-name').addEventListener('keyup', function (evt) {
       evt.stopPropagation();
     });
   };
-
-  var closePopup = function () {
+  // Закрывает попап
+  var _closePopup = function () {
     POPUP.classList.add('hidden');
-    document.removeEventListener('keyup', onPopupEscPress);
-    document.removeEventListener('keyup', onEnterClosePress);
+    document.removeEventListener('keyup', _onPopupEscPress);
+    document.removeEventListener('keyup', _onEnterClosePress);
   };
 
-  var onPopupEscPress = function (evt) {
-    window.utils.isEscapeEvent(evt, closePopup);
+  // ХЭНДЛЕРЫ
+  // Нажатие клавиши Esc, если открыт попап
+  var _onPopupEscPress = function (evt) {
+    window.utils.isEscapeEvent(evt, _closePopup);
   };
-
-  var onEnterInputPress = function (evt) {
+  // Нажатие кливаши Enter при фокусе на аватаре пользовател
+  var _onEnterInputPress = function (evt) {
     window.utils.isEnterEvent(evt, function () {
       evt.stopPropagation();
-      openPopup();
+      _openPopup();
+    });
+  };
+  // Нажатие кливаши Enter при фокусе на кнопке закрытия попапа
+  var _onEnterClosePress = function (evt) {
+    window.utils.isEnterEvent(evt, function () {
+      evt.stopPropagation();
+      _closePopup();
     });
   };
 
-  var onEnterClosePress = function (evt) {
-    window.utils.isEnterEvent(evt, function () {
-      evt.stopPropagation();
-      closePopup();
-    });
+  // Запускает модуль
+  var init = function () {
+    CLOSE_POPUP_BTN.addEventListener('click', _closePopup);
+    OPEN_POPUP_BTN.addEventListener('click', _openPopup);
+    OPEN_POPUP_BTN.querySelector('.setup-open-icon').addEventListener('keyup', _onEnterInputPress);
   };
 
-  // Открытие/закрытие попапа
-  CLOSE_POPUP_BTN.addEventListener('click', closePopup);
-  OPEN_POPUP_BTN.addEventListener('click', openPopup);
-  OPEN_POPUP_BTN.querySelector('.setup-open-icon').addEventListener('keyup', onEnterInputPress);
+  init();
 
 })();
