@@ -1,220 +1,165 @@
 'use strict';
-
-// utils.js
 (function () {
-  // TODO 'use strict';
-  var ESC_KEY = 'Escape';
-  var ENTER_KEY = 'Enter';
+  // КОНСТАНТЫ
+  // Ссылки на настраиваемые элементы героя
+  var WIZARD_COAT = document.querySelector('.wizard-coat');
+  var WIZARD_EYES = document.querySelector('.wizard-eyes');
+  var FIREBALL = document.querySelector('.setup-fireball-wrap');
 
-  var isEscapeEvent = function (evt, action) {
-    if (evt.key === ESC_KEY) {
-      action();
+  // Шаблон, используемый для генерации вёрстки похожих героев
+  var WIZARD_TEMPLATE = document.getElementById('similar-wizard-template').content.querySelector('.js-wizard-html-wrap');
+
+  // Требуемое кол-во героев в блоке «Похожие персонажи»
+  var HEROES_COUNT = 4;
+
+  // ДАННЫЕ ДЛЯ ГЕНЕРАЦИИ ГЕРОЕВ
+  // Все имена
+  var FIRST_NAMES = [
+    'Иван',
+    'Хуан Себастьян',
+    'Мария',
+    'Кристоф',
+    'Виктор',
+    'Юлия',
+    'Люпита',
+    'Вашингтон'
+  ];
+  // Все фамилии
+  var SUR_NAMES = [
+    'да Марья',
+    'Верон',
+    'Мирабелла',
+    'Вальц',
+    'Онопко',
+    'Топольницкая',
+    'Нионго',
+    'Ирвинг'
+  ];
+  // Все цвета мантии (rgb)
+  var COAT_COLORS = [
+    '101, 137, 164',
+    '241, 43, 107',
+    '146, 100, 161',
+    '56, 159, 117',
+    '215, 210, 55',
+    '0, 0, 0'
+  ];
+  // Все цвета глаз
+  var EYES_COLORS = [
+    'black',
+    'red',
+    'blue',
+    'yellow',
+    'green'
+  ];
+  // Все цвета фаербола
+  var FIREBALL_COLORS = [
+    '#ee4830',
+    '#30a8ee',
+    '#5ce6c0',
+    '#e848d5',
+    '#e6e848'
+  ];
+
+  // ВСПОМОГАТЕЛЬНЫЕ ПЕРЕМЕННЫЕ
+  // Массив для записи героев
+  var _heroes = [];
+  // Контейнер для вёрстки похожих героев
+  var _fragment = document.createDocumentFragment();
+
+  // ФУНКЦИИ
+  // Функция-конструктор героев
+  function Hero() {
+    this.fullName = window.utils.getRandomElem(FIRST_NAMES) + ' ' + window.utils.getRandomElem(SUR_NAMES);
+    this.coatColor = window.utils.getRandomElem(COAT_COLORS);
+    this.eyesColor = window.utils.getRandomElem(EYES_COLORS);
+  }
+  // Изменяет цвет элемента и добавляет значение цвета в указнный input
+  var _changeElementColor = function (item, color, inputName, type) {
+    if (inputName) {
+      document.querySelector('[name="' + inputName + '"]').value = color;
+    }
+    if (type === 'background') {
+      item.style.backgroundColor = color;
+    } else {
+      item.style.fill = color;
     }
   };
-
-  var isEnterEvent = function (evt, action) {
-    if (evt.key === ENTER_KEY) {
-      action();
+  // Заполняяет массив _heroes, указанным в константе HEROES_COUNT количеством героев
+  var _prepareHeroesData = function () {
+    // Создаём  и добавлям в массив требуемое кол-во героев
+    for (var i = 0; i < HEROES_COUNT; i++) {
+      _heroes.push(new Hero());
     }
   };
+  // Генерирует вёрстку героев
+  var _generateHeroesHtml = function () {
+    // Проходим по массиву, копируем вёрстку из шаблона, изменяем её, вставляем в фрагмент
+    _heroes.forEach(function (hero) {
+      var wizardHtml = WIZARD_TEMPLATE.cloneNode(true);
 
-  window.utils = {
-    ESC_KEY: ESC_KEY,
-    ENTER_KEY: ENTER_KEY,
-    isEnterEvent: isEnterEvent,
-    isEscapeEvent: isEscapeEvent
+      _changeElementColor(
+          wizardHtml.querySelector('.js-wizard-coat'),
+          'rgb(' + hero.coatColor + ')',
+          false,
+          'fill'
+      );
+      _changeElementColor(
+          wizardHtml.querySelector('.js-wizard-eyes'),
+          hero.eyesColor,
+          false,
+          'fill'
+      );
+
+      wizardHtml.querySelector('.js-wizard-full-name').textContent = hero.fullName;
+
+      _fragment.appendChild(wizardHtml);
+    });
   };
+  // Вставляет вёрстку героев в блок «Похожие персонажи» и показывает его
+  var _initSimilarWizards = function () {
+    // Находим необходимый узел и вставялем в него фрагмент со всей вёрсткой
+    document.querySelector('.js-insert-wizards').appendChild(_fragment);
+    // Находим главный контейнер и показываем его
+    document.querySelector('.js-similar-wizards-container').classList.remove('hidden');
+  };
+  // Вешает хэндлеры
+  var _setHandlers = function () {
+    // Изменение цвета мантии
+    WIZARD_COAT.addEventListener('click', function (evt) {
+      _changeElementColor(
+          evt.currentTarget,
+          'rgb(' + window.utils.getRandomElem(COAT_COLORS) + ')',
+          'coat-color'
+      );
+    });
+    // Изменение цвета глаз
+    WIZARD_EYES.addEventListener('click', function (evt) {
+      _changeElementColor(
+          evt.currentTarget,
+          window.utils.getRandomElem(EYES_COLORS),
+          'eyes-color'
+      );
+    });
+    // Изменение цвета фаербола
+    FIREBALL.addEventListener('click', function (evt) {
+      _changeElementColor(
+          evt.currentTarget,
+          window.utils.getRandomElem(FIREBALL_COLORS),
+          'fireball-color',
+          'background'
+      );
+    });
+  };
+
+  // Запускает выполнение модуля
+  var init = function () {
+    _prepareHeroesData();
+    _generateHeroesHtml();
+    _initSimilarWizards();
+    _setHandlers();
+  };
+
+  init();
+
 })();
-
-// dialog.js
-(function () {
-  // TODO 'use strict';
-  // TODO перенести константы
-  var openPopup = function () {
-    POPUP.classList.remove('hidden');
-    document.addEventListener('keyup', onPopupEscPress);
-    CLOSE_POPUP_BTN.addEventListener('keyup', onEnterClosePress);
-    POPUP.querySelector('.setup-user-name').addEventListener('keyup', function (evt) {
-      evt.stopPropagation();
-    });
-  };
-
-  var closePopup = function () {
-    POPUP.classList.add('hidden');
-    document.removeEventListener('keyup', onPopupEscPress);
-    document.removeEventListener('keyup', onEnterClosePress);
-  };
-
-  var onPopupEscPress = function (evt) {
-    window.utils.isEscapeEvent(evt, closePopup);
-  };
-
-  var onEnterInputPress = function (evt) {
-    // TODO stopPropagation??
-    window.utils.isEnterEvent(evt, function () {
-      evt.stopPropagation();
-      openPopup();
-    });
-  };
-
-  var onEnterClosePress = function (evt) {
-    // TODO stopPropagation??
-    window.utils.isEnterEvent(evt, function () {
-      evt.stopPropagation();
-      closePopup();
-    });
-  };
-
-})();
-
-
-var POPUP = document.querySelector('.js-setup-toggle');
-var CLOSE_POPUP_BTN = POPUP.querySelector('.setup-close');
-var OPEN_POPUP_BTN = document.querySelector('.setup-open');
-
-var WIZARD_COAT = document.querySelector('.wizard-coat');
-var WIZARD_EYES = document.querySelector('.wizard-eyes');
-var FIREBALL = document.querySelector('.setup-fireball-wrap');
-
-var WIZARD_TEMPLATE = document.getElementById('similar-wizard-template').content.querySelector('.js-wizard-html-wrap');
-
-// Требуемое кол-во героев
-var HEROES_COUNT = 4;
-
-// Все имена
-var FIRST_NAMES = [
-  'Иван',
-  'Хуан Себастьян',
-  'Мария',
-  'Кристоф',
-  'Виктор',
-  'Юлия',
-  'Люпита',
-  'Вашингтон'
-];
-// Все фамилии
-var SUR_NAMES = [
-  'да Марья',
-  'Верон',
-  'Мирабелла',
-  'Вальц',
-  'Онопко',
-  'Топольницкая',
-  'Нионго',
-  'Ирвинг'
-];
-// Все цвета мантии (rgb)
-var COAT_COLORS = [
-  '101, 137, 164',
-  '241, 43, 107',
-  '146, 100, 161',
-  '56, 159, 117',
-  '215, 210, 55',
-  '0, 0, 0'
-];
-// Все цвета глаз
-var EYES_COLORS = [
-  'black',
-  'red',
-  'blue',
-  'yellow',
-  'green'
-];
-// Все цвета фаербола
-var FIREBALL_COLORS = [
-  '#ee4830',
-  '#30a8ee',
-  '#5ce6c0',
-  '#e848d5',
-  '#e6e848'
-];
-
-function Hero() {
-  this.fullName = getRandomElem(FIRST_NAMES) + ' ' + getRandomElem(SUR_NAMES);
-  this.coatColor = getRandomElem(COAT_COLORS);
-  this.eyesColor = getRandomElem(EYES_COLORS);
-}
-
-// Возвращает случайный элемент массива
-var getRandomElem = function (arr) {
-  return arr[Math.floor(Math.random() * arr.length)];
-};
-
-var changeElementColor = function (item, color, inputName, type) {
-  if (inputName) {
-    document.querySelector('[name="' + inputName + '"]').value = color;
-  }
-  if (type === 'background') {
-    item.style.backgroundColor = color;
-  } else {
-    item.style.fill = color;
-  }
-};
-
-// Создаём массив и добавлям в него требуемое кол-во героев
-var heroes = [];
-for (var i = 0; i < HEROES_COUNT; i++) {
-  heroes.push(new Hero());
-}
-
-// Генерируем вёрстку
-// Создаём контейнер для вёрстки
-var fragment = document.createDocumentFragment();
-// Проходим по массиву, копируем вёрстку из шаблона, изменяем её, вставляем в фрагмент
-heroes.forEach(function (hero) {
-  var wizardHtml = WIZARD_TEMPLATE.cloneNode(true);
-
-  changeElementColor(
-      wizardHtml.querySelector('.js-wizard-coat'),
-      'rgb(' + hero.coatColor + ')',
-      false,
-      'fill'
-  );
-  changeElementColor(
-      wizardHtml.querySelector('.js-wizard-eyes'),
-      hero.eyesColor,
-      false,
-      'fill'
-  );
-
-  wizardHtml.querySelector('.js-wizard-full-name').textContent = hero.fullName;
-
-  fragment.appendChild(wizardHtml);
-});
-
-// Находим необходимый узел и вставялем в него фрагмент со всей вёрсткой
-document.querySelector('.js-insert-wizards').appendChild(fragment);
-
-// Находим главный контейнер и показываем его
-document.querySelector('.js-similar-wizards-container').classList.remove('hidden');
-
-// Открытие/закрытие попапа
-CLOSE_POPUP_BTN.addEventListener('click', closePopup);
-OPEN_POPUP_BTN.addEventListener('click', openPopup);
-OPEN_POPUP_BTN.querySelector('.setup-open-icon').addEventListener('keyup', onEnterInputPress);
-
-// Изменение цвета мантии
-WIZARD_COAT.addEventListener('click', function (evt) {
-  changeElementColor(
-      evt.currentTarget,
-      'rgb(' + getRandomElem(COAT_COLORS) + ')',
-      'coat-color'
-  );
-});
-// Изменение цвета глаз
-WIZARD_EYES.addEventListener('click', function (evt) {
-  changeElementColor(
-      evt.currentTarget,
-      getRandomElem(EYES_COLORS),
-      'eyes-color'
-  );
-});
-// Изменение цвета фаербола
-FIREBALL.addEventListener('click', function (evt) {
-  changeElementColor(
-      evt.currentTarget,
-      getRandomElem(FIREBALL_COLORS),
-      'eyes-color',
-      'background'
-  );
-});
