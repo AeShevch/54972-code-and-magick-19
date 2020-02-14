@@ -58,7 +58,7 @@
 
   // ФУНКЦИИ
   // Находит значения соответствующие пользователю в массивах времён и результатов и переносит их в начало
-  var moveUserToStart = function (names, times) {
+  var _moveUserToStart = function (names, times) {
     // Узнаём индекс имени игрока в массиве names
     var userIndex = names.indexOf('Вы');
 
@@ -68,7 +68,7 @@
   };
   // Получает значение одного процента максимального размера колонки гистограммы для того,
   // чтобы можно было расчитать размеры других колонок
-  var getOnePercentValueOfMaxColumnWidth = function (times) {
+  var _getOnePercentValueOfMaxColumnWidth = function (times) {
     // Сортируем результаты по убыванию, чтобы найти максимальное значение
     var sortedTimes = times.slice().sort(function (a, b) {
       return b - a;
@@ -77,10 +77,10 @@
     return parseInt(sortedTimes[0], 10).toFixed(1) / 100;
   };
   // Рисует гистограмму
-  var createHistogramColumns = function (names, times, ctx) {
+  var _createHistogramColumns = function (names, times, ctx) {
     names.forEach(function (name, i) {
       // Высота колонки это максимальная высота, умноженная на процент данного значения результата от максимального
-      var columnHeight = HISTOGRAM_INNER_HEIGHT * (times[i] / getOnePercentValueOfMaxColumnWidth(times)) / 100;
+      var columnHeight = HISTOGRAM_INNER_HEIGHT * (times[i] / _getOnePercentValueOfMaxColumnWidth(times)) / 100;
       // Позиция по X это координата левой границы контейнера + отступ и ширина колонки в количестве равном порядковому номеру колонки
       var columnPosX = HISTOGRAM_INNER_X + i * (COLUMN_INDENT + COLUMN_WIDTH);
       // Позиция по Y это верхняя граница контейнера + его высота и минус высота колонки
@@ -112,7 +112,7 @@
       );
 
       // Бар результата
-      createFillRect(
+      _createFillRect(
         ctx,
         columnPosX,
         resultBarPosY,
@@ -133,7 +133,7 @@
     });
   };
   // Рисует залитый прямоугольник
-  var createFillRect = function (ctx, posX, posY, width, height, color) {
+  var _createFillRect = function (ctx, posX, posY, width, height, color) {
     ctx.beginPath();
     ctx.rect(
       posX,
@@ -145,7 +145,7 @@
     ctx.fill();
   };
   // Рисует рамку
-  var createStrokeRect = function (ctx, posX, posY, width, height, color) {
+  var _createStrokeRect = function (ctx, posX, posY, width, height, color) {
     ctx.beginPath();
     ctx.strokeStyle = color;
     ctx.strokeRect(
@@ -160,7 +160,7 @@
   window.renderStatistics = function (ctx, names, times) {
     // Начинаем рисовать
     // Тень
-    createFillRect(
+    _createFillRect(
         ctx,
         CLOUD_POSITION_X + SHADOW_OFFSET,
         CLOUD_POSITION_Y + SHADOW_OFFSET,
@@ -170,7 +170,7 @@
     );
 
     // Облако
-    createFillRect(
+    _createFillRect(
         ctx,
         CLOUD_POSITION_X,
         CLOUD_POSITION_Y,
@@ -195,7 +195,7 @@
     );
 
     // Рамка гистограммы
-    createStrokeRect(
+    _createStrokeRect(
         ctx,
         HISTOGRAM_WRAP_X,
         HISTOGRAM_WRAP_Y,
@@ -204,7 +204,7 @@
         MAIN_TEXT_COLOR
     );
 
-    moveUserToStart(names, times);
-    createHistogramColumns(names, times, ctx)
+    _moveUserToStart(names, times);
+    _createHistogramColumns(names, times, ctx)
   };
 })();
