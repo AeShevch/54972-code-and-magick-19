@@ -5,6 +5,7 @@
   var POPUP = document.querySelector('.js-setup-toggle');
   var CLOSE_POPUP_BTN = POPUP.querySelector('.setup-close');
   var OPEN_POPUP_BTN = document.querySelector('.setup-open');
+  var POPUP_HANDLER = POPUP.querySelector('.upload');
 
   // ФУНКЦИИ
   // Открывает попап
@@ -15,12 +16,16 @@
     POPUP.querySelector('.setup-user-name').addEventListener('keyup', function (evt) {
       evt.stopPropagation();
     });
+    // Включает перетаскивание окна настроек
+    window.utils.dragNdropInit(POPUP_HANDLER, POPUP);
   };
   // Закрывает попап
   var _closePopup = function () {
     POPUP.classList.add('hidden');
     document.removeEventListener('keyup', _onPopupEscPress);
     document.removeEventListener('keyup', _onEnterClosePress);
+    // Сбрасывает top и left у попапа
+    window.utils.positionReset(POPUP);
   };
 
   // ХЭНДЛЕРЫ

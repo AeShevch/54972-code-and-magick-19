@@ -106,27 +106,27 @@
       // Строка с количеством секунд
       ctx.fillStyle = MAIN_TEXT_COLOR;
       ctx.fillText(
-        Math.round(times[i]).toString(),
-        columnPosX,
-        columnPosY
+          Math.round(times[i]).toString(),
+          columnPosX,
+          columnPosY
       );
 
       // Бар результата
       _createFillRect(
-        ctx,
-        columnPosX,
-        resultBarPosY,
-        COLUMN_WIDTH,
-        resultBarHeight,
-        columnColor
+          ctx,
+          columnPosX,
+          resultBarPosY,
+          COLUMN_WIDTH,
+          resultBarHeight,
+          columnColor
       );
 
       // Строка с именем игрока
       ctx.fillStyle = MAIN_TEXT_COLOR;
       ctx.fillText(
-        name,
-        columnPosX,
-        nameTextPosY
+          name,
+          columnPosX,
+          nameTextPosY
       );
 
       ctx.closePath();
@@ -136,10 +136,10 @@
   var _createFillRect = function (ctx, posX, posY, width, height, color) {
     ctx.beginPath();
     ctx.rect(
-      posX,
-      posY,
-      width,
-      height
+        posX,
+        posY,
+        width,
+        height
     );
     ctx.fillStyle = color;
     ctx.fill();
@@ -149,10 +149,10 @@
     ctx.beginPath();
     ctx.strokeStyle = color;
     ctx.strokeRect(
-      posX,
-      posY,
-      width,
-      height
+        posX,
+        posY,
+        width,
+        height
     );
   };
 
