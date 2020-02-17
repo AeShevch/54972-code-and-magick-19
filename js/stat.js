@@ -205,6 +205,6 @@
     );
 
     _moveUserToStart(names, times);
-    _createHistogramColumns(names, times, ctx)
+    _createHistogramColumns(names, times, ctx);
   };
 })();
