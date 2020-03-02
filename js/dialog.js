@@ -16,8 +16,8 @@
     POPUP.querySelector('.setup-user-name').addEventListener('keyup', function (evt) {
       evt.stopPropagation();
     });
-    // Включает перетаскивание окна настроек
     window.utils.dragNdropInit(POPUP_HANDLER, POPUP);
+
   };
   // Закрывает попап
   var _closePopup = function () {
@@ -33,14 +33,14 @@
   var _onPopupEscPress = function (evt) {
     window.utils.isEscapeEvent(evt, _closePopup);
   };
-  // Нажатие кливаши Enter при фокусе на аватаре пользовател
+  // Нажатие клавиши Enter при фокусе на аватаре пользовател
   var _onEnterInputPress = function (evt) {
     window.utils.isEnterEvent(evt, function () {
       evt.stopPropagation();
       _openPopup();
     });
   };
-  // Нажатие кливаши Enter при фокусе на кнопке закрытия попапа
+  // Нажатие клавиши Enter при фокусе на кнопке закрытия попапа
   var _onEnterClosePress = function (evt) {
     window.utils.isEnterEvent(evt, function () {
       evt.stopPropagation();
